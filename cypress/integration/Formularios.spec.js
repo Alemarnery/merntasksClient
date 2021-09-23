@@ -31,15 +31,40 @@ describe("<Formularios/>", () => {
     cy.visit("/nueva-cuenta");
   });
 
-  it("<NuevaCuenta/> - Verificar Obtener una Cuenta", () => {
+  it("<NuevaCuenta/> - Verificar componente de nueva Cuenta", () => {
     //Probar el texto
     cy.get("[data-cy=titulo]")
+      .should("exist")
       .invoke("text")
       .should("equal", "Obtener una cuenta");
 
     //Revisar que el formulario exista
-    cy.get("[data-cy=usuario-form]").should("exist");
+    cy.get("[data-cy=nueva-cuenta]").should("exist");
 
     //Revisar los inputs
+    cy.get("[data-cy=nombre-input]").should("exist");
+    cy.get("[data-cy=email-input]").should("exist");
+
+    cy.get("[data-cy=password-input]")
+      .should("exist")
+      .should("have.prop", "type")
+      .should("equal", "password");
+
+    cy.get("[data-cy=repetir-password-input]")
+      .should("exist")
+      .should("have.prop", "type")
+      .should("equal", "password");
+
+    cy.get("[data-cy=btn-input]")
+      .should("exist")
+      .should("have.class", "btn-primario")
+      .should("have.value", "Registrarme");
+
+    cy.get("[data-cy=enlace-login]")
+      .should("exist")
+      .should("have.attr", "href")
+      .should("eq", "/");
+
+    cy.visit("/");
   });
 });

@@ -1,88 +1,96 @@
-import React, { Fragment, useState, useContext } from 'react';
-import proyectoContext from '../../context/proyectos/proyectoContext';
+import React, { Fragment, useState, useContext } from "react";
+import proyectoContext from "../../context/proyectos/proyectoContext";
 
 const NuevoProyecto = () => {
+  // Obtener el state del formulario
+  const proyectosContext = useContext(proyectoContext);
+  const {
+    formulario,
+    errorformulario,
+    mostrarFormulario,
+    agregarProyecto,
+    mostrarError,
+  } = proyectosContext;
 
-    // Obtener el state del formulario
-    const proyectosContext = useContext(proyectoContext);
-    const { formulario, errorformulario,  mostrarFormulario, agregarProyecto, mostrarError } = proyectosContext;
+  // State para Proyecto
+  const [proyecto, guardarProyecto] = useState({
+    nombre: "",
+  });
 
+  // Extraer nombre de proyecto
+  const { nombre } = proyecto;
 
-    // State para Proyecto
-    const [proyecto, guardarProyecto] = useState({
-        nombre: ''
+  // Lee los contenidos del input
+  const onChangeProyecto = (e) => {
+    guardarProyecto({
+      ...proyecto,
+      [e.target.name]: e.target.value,
     });
+  };
 
-    // Extraer nombre de proyecto
-    const { nombre } = proyecto;
+  // Cuando el usuario envia un proyecto
+  const onSubmitProyecto = (e) => {
+    e.preventDefault();
 
-    // Lee los contenidos del input
-    const onChangeProyecto = e => {
-        guardarProyecto({
-            ...proyecto,
-            [e.target.name] : e.target.value
-        })
+    // Validar el proyecto
+    if (nombre === "") {
+      mostrarError();
+      return;
     }
 
-    // Cuando el usuario envia un proyecto
-    const onSubmitProyecto = e => {
-        e.preventDefault();
+    // agregar al state
+    agregarProyecto(proyecto);
 
-        // Validar el proyecto
-        if(nombre === '') {
-            mostrarError();
-            return;
-        }
+    // Reiniciar el form
+    guardarProyecto({
+      nombre: "",
+    });
+  };
 
-        // agregar al state
-        agregarProyecto(proyecto)
+  // Mostrar el formulario
+  const onClickFormulario = () => {
+    mostrarFormulario();
+  };
 
-        // Reiniciar el form
-        guardarProyecto({
-            nombre: ''
-        })
-    }
+  return (
+    <Fragment>
+      <button
+        data-cy="btn-nuevo-proyecto"
+        type="button"
+        className="btn btn-block btn-primario"
+        onClick={onClickFormulario}
+      >
+        Nuevo Proyecto
+      </button>
 
-    // Mostrar el formulario
-    const onClickFormulario = () => {
-        mostrarFormulario();
-    }
+      {formulario ? (
+        <form className="formulario-nuevo-proyecto" onSubmit={onSubmitProyecto}>
+          <input
+            data-cy="input-nuevo-proyecto"
+            type="text"
+            className="input-text"
+            placeholder="Nombre Proyecto"
+            name="nombre"
+            value={nombre}
+            onChange={onChangeProyecto}
+          />
 
-    return ( 
-        <Fragment>
-            <button 
-                type="button"
-                className="btn btn-block btn-primario"
-                onClick={ onClickFormulario }
-            >Nuevo Proyecto</button>
+          <input
+            data-cy="submit-nuevo-proyecto"
+            type="submit"
+            className="btn btn-primario btn-block"
+            value="Agregar Proyecto"
+          />
+        </form>
+      ) : null}
 
-            { formulario ? 
-                    (
-                        <form
-                            className="formulario-nuevo-proyecto"
-                            onSubmit={onSubmitProyecto}
-                        >
-                            <input 
-                                type="text"
-                                className="input-text"
-                                placeholder="Nombre Proyecto"
-                                name="nombre"
-                                value={nombre}
-                                onChange={onChangeProyecto}
-                            />
+      {errorformulario ? (
+        <p data-cy="alerta" className="mensaje error">
+          El nombre del Proyecto es obligatorio
+        </p>
+      ) : null}
+    </Fragment>
+  );
+};
 
-                            <input 
-                                type="submit"
-                                className="btn btn-primario btn-block"
-                                value="Agregar Proyecto"
-                            />
-
-                        </form>
-                ) : null }
-
-            { errorformulario ? <p className="mensaje error">El nombre del Proyecto es obligatorio</p>  : null }
-        </Fragment>
-     );
-}
- 
 export default NuevoProyecto;

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AlertaContext from "../../context/alertas/alertaContext";
 import AuthContext from "../../context/autenticacion/authContext";
+import Alerta from "../layout/Alerta";
 
 const NuevaCuenta = (props) => {
   // extraer los valores del context
@@ -81,16 +82,16 @@ const NuevaCuenta = (props) => {
 
   return (
     <div className="form-usuario">
-      {alerta ? (
-        <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>
-      ) : null}
+      <Alerta alerta={alerta} />
+
       <div className="contenedor-form sombra-dark">
         <h1 data-cy="titulo">Obtener una cuenta</h1>
 
-        <form onSubmit={onSubmit} data-cy="usuario-form">
+        <form onSubmit={onSubmit} data-cy="nueva-cuenta">
           <div className="campo-form">
             <label htmlFor="nombre">Nombre</label>
             <input
+              data-cy="nombre-input"
               type="text"
               id="nombre"
               name="nombre"
@@ -103,6 +104,7 @@ const NuevaCuenta = (props) => {
           <div className="campo-form">
             <label htmlFor="email">Email</label>
             <input
+              data-cy="email-input"
               type="email"
               id="email"
               name="email"
@@ -115,6 +117,7 @@ const NuevaCuenta = (props) => {
           <div className="campo-form">
             <label htmlFor="password">Password</label>
             <input
+              data-cy="password-input"
               type="password"
               id="password"
               name="password"
@@ -127,6 +130,7 @@ const NuevaCuenta = (props) => {
           <div className="campo-form">
             <label htmlFor="confirmar">Confirmar Password</label>
             <input
+              data-cy="repetir-password-input"
               type="password"
               id="confirmar"
               name="confirmar"
@@ -138,6 +142,7 @@ const NuevaCuenta = (props) => {
 
           <div className="campo-form">
             <input
+              data-cy="btn-input"
               type="submit"
               className="btn btn-primario btn-block"
               value="Registrarme"
@@ -145,7 +150,7 @@ const NuevaCuenta = (props) => {
           </div>
         </form>
 
-        <Link to={"/"} className="enlace-cuenta">
+        <Link to={"/"} className="enlace-cuenta" data-cy="enlace-login">
           Volver a Iniciar Sesión
         </Link>
       </div>
